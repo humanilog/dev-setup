@@ -1,0 +1,26 @@
+version: '2'
+services:
+  web:
+    image: odoo:10.0
+    #https://stackoverflow.com/questions/44263764/update-all-odoo-modules-in-a-docker-container
+    command: odoo -u all -d odoo
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+      - '/data:/var/lib/odoo'
+  db:
+    image: postgres:9.4
+    environment:
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+volumes:
+  odoo-web-data:
+  odoo-db-data:
