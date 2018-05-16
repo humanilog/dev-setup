@@ -1,8 +1,8 @@
 version: '2'
 services:
   web:
-    image: custom-odoo:9.0
-    command: --update all --database example --addons-path="/mnt/extra-addons"
+    image: custom-odoo:10.0
+    command: --update donation_de --database example --addons-path="/mnt/extra-addons"
     # -u tells Odoo to update a certain addon (e.g. myconferences), you can also put "all"
     # -d specifies the name of the database, here "example"
     # https://stackoverflow.com/questions/44263764/update-all-odoo-modules-in-a-docker-container
