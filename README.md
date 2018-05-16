@@ -1,5 +1,9 @@
 # dev-setup
 
+First build the customized Docker image using:
+
+    docker build --tag custom-odoo:10.0 custom-odoo/
+
 Run Odoo using:
 
     docker-compose up
