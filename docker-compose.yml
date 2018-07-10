@@ -2,7 +2,7 @@ version: '2'
 services:
   web:
     image: odoo:10.0
-    command: -u theme_example -d example --addons-path="/mnt/extra-addons"
+    command: -u all -d dev-setup_db_1 --addons-path="/mnt/extra-addons"
     # -u tells Odoo to update a certain addon (e.g. myconferences), you can also put "all"
     # -d specifies the name of the database, here "example"
     # https://stackoverflow.com/questions/44263764/update-all-odoo-modules-in-a-docker-container
