@@ -12,11 +12,13 @@ Run Odoo using:
 
 ## Install extra modules/addons
 
-Load the code of the module into ./addons
+Load the code of the module into `./addons`
 
-There must be a __init__.py and __manifest__.py file in the addon folder. Otherwise the addon will not be found by Odoo.
+There must be a `__init__.py` and `__manifest__.py` file in the addon folder. Otherwise the addon will not be found by Odoo.
 
-In Odoo in Developer Mode the Apps List must be updated. Then the new addon is visible in Odoo.
+In Odoo in Developer Mode the Apps List must be updated. 
+
+Then the new addon is visible in Odoo and can be installed.
 
 ## If you need to access the docker container:
 
