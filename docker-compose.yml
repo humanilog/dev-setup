@@ -1,9 +1,12 @@
 version: '2'
 services:
   web:
-    image: odoo:10.0
-    #https://stackoverflow.com/questions/44263764/update-all-odoo-modules-in-a-docker-container
-    command: odoo -u all -d odoo
+    image: custom-odoo:10.0
+    command: --update all --database dev-setup_db_1 --addons-path="/mnt/extra-addons"
+    # -u tells Odoo to update a certain addon (e.g. myconferences), you can also put "all"
+    # -d specifies the name of the database, here "example"
+    # --addons-path is the path in the docker container
+    # https://stackoverflow.com/questions/44263764/update-all-odoo-modules-in-a-docker-container
     depends_on:
       - db
     ports:
@@ -11,8 +14,7 @@ services:
     volumes:
       - odoo-web-data:/var/lib/odoo
       - ./config:/etc/odoo
-      - ./addons:/mnt/extra-addons
-      - '/data:/var/lib/odoo'
+      - ./addons:/mnt/extra-addons #mount local addons folder to docker container
   db:
     image: postgres:9.4
     environment:
