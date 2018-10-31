@@ -1,8 +1,0 @@
-{
-    "python.linting.pylintEnabled": false,
-    "files.exclude": {
-        "**/*.pyc": {
-            "when": "$(basename).py"
-        }
-    },
-}
