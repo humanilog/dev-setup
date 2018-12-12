@@ -1,6 +1,6 @@
-FROM odoo:10.0
+FROM odoo:11.0
 
 USER root
-RUN pip install num2words
+RUN pip3 install num2words
 
 USER odoo
