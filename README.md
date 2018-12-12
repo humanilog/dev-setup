@@ -4,7 +4,7 @@
 
 First build the customized Docker image using:
 
-    docker build --tag custom-odoo:10.0 custom-odoo/
+    docker build --tag custom-odoo:11.0 custom-odoo/
 
 Run Odoo using:
 
