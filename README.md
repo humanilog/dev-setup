@@ -34,8 +34,12 @@ or
 
     docker exec -it $(docker ps -aqf "name=dev-setup_web") /bin/bash
 
+## wait-for-it script
 
-## Trouble shooting ##
+The wait-for-it bash script is used to start the odoo docker image only after the postgres server is up. Check out **Troubleshooting** to understand why. The script is cpoied from https://github.com/vishnubob/wait-for-it.
+
+## Troubleshooting 
+
 It happens - especially during the first installation - that the postgres db is not fast enough in starting up. Odoo is then already trying to connect to postgres and then exits with an error code.
 
 Please wait until postgres is up before you kill docker.
