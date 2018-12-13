@@ -1,28 +1,32 @@
-version: '2'
+version: '3.3'
 services:
-  web:
-    image: custom-odoo:10.0
-    command: --update all --database dev-setup_db_1 --addons-path="/mnt/extra-addons"
-    # -u tells Odoo to update a certain addon (e.g. myconferences), you can also put "all"
-    # -d specifies the name of the database, here "example"
-    # --addons-path is the path in the docker container
-    # https://stackoverflow.com/questions/44263764/update-all-odoo-modules-in-a-docker-container
-    depends_on:
-      - db
-    ports:
-      - "8069:8069"
-    volumes:
-      - odoo-web-data:/var/lib/odoo
-      - ./config:/etc/odoo
-      - ./addons:/mnt/extra-addons #mount local addons folder to docker container
-  db:
-    image: postgres:9.4
-    environment:
-      - POSTGRES_PASSWORD=odoo
-      - POSTGRES_USER=odoo
-      - PGDATA=/var/lib/postgresql/data/pgdata
-    volumes:
-      - odoo-db-data:/var/lib/postgresql/data/pgdata
-volumes:
-  odoo-web-data:
-  odoo-db-data:
+    postgres:
+      image: postgres:9.5 
+      volumes:
+        - ./volumes/postgres:/var/lib/postgresql/data
+      environment:
+        - POSTGRES_USER=odoo
+    odoo:
+      image: custom-odoo:10.0
+      entrypoint:
+        - wait-for-it.sh
+        - postgres:5432
+        - --  
+        - /entrypoint.sh
+        - odoo  
+        # NOT TESTED HOWTO DO flags
+        # --update all --database dev-setup_postgres_1 
+        # -u tells Odoo to update a certain addon (e.g. myconferences), you can also put "all"
+        # -d specifies the name of the database, here "example"
+        # --addons-path is the path in the docker container
+      ports:
+        - 127.0.0.1:8069:8069
+      volumes:
+        - ./wait-for-it/wait-for-it.sh:/usr/local/bin/wait-for-it.sh
+        - ./addons:/mnt/extra-addons
+        - ./volumes/odoo/filestore:/opt/odoo/data/filestore
+        - ./volumes/odoo/sessions:/opt/odoo/data/sessions
+      links:
+        - postgres:db
+      environment:
+        - ODOO_DB_USER=odoo
