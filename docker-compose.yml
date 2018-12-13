@@ -8,10 +8,21 @@ services:
         - POSTGRES_USER=odoo
     odoo:
       image: custom-odoo:11.0
-      command: --update all --database dev-setup_postgres_1 
+      entrypoint:
+        - wait-for-it.sh
+        - postgres:5432
+        - --  
+        - /entrypoint.sh
+        - odoo  
+        # NOT TESTED HOWTO DO flags
+        # --update all --database dev-setup_postgres_1 
+        # -u tells Odoo to update a certain addon (e.g. myconferences), you can also put "all"
+        # -d specifies the name of the database, here "example"
+        # --addons-path is the path in the docker container
       ports:
         - 127.0.0.1:8069:8069
       volumes:
+        - ./wait-for-it/wait-for-it.sh:/usr/local/bin/wait-for-it.sh
         - ./addons:/mnt/extra-addons
         - ./volumes/odoo/filestore:/opt/odoo/data/filestore
         - ./volumes/odoo/sessions:/opt/odoo/data/sessions

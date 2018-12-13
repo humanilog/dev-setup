@@ -33,3 +33,20 @@ You can jump into the Odoo container by executing:
 or
 
     docker exec -it $(docker ps -aqf "name=dev-setup_web") /bin/bash
+
+
+## Trouble shooting ##
+It happens - especially during the first installation - that the postgres db is not fast enough in starting up. Odoo is then already trying to connect to postgres and then exits with an error code.
+
+Please wait until postgres is up before you kill docker.
+
+Depending on the os it then might just work if you try it again.
+It happens that postgres or odoo saves a weird error because of the first error exit. Then you have to delete all data of odoo and postgres before starting it up again.
+
+Therefore try
+
+    docker rm $(docker ps -a -q)	
+
+    docker volume prune
+
+and if it is still not working also clear all volumes folders of dev-setup.
