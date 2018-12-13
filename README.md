@@ -2,7 +2,7 @@
 
 ## URL / Port for 10.0
     
-    localhost:8068 or 127.0.0.1:8068
+    localhost:8070 or 127.0.0.1:8070
 
 ## Installation
 
