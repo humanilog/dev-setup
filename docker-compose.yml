@@ -20,7 +20,7 @@ services:
         # -d specifies the name of the database, here "example"
         # --addons-path is the path in the docker container
       ports:
-        - 127.0.0.1:8069:8069
+        - 127.0.0.1:8068:8068
       volumes:
         - ./wait-for-it/wait-for-it.sh:/usr/local/bin/wait-for-it.sh
         - ./addons:/mnt/extra-addons

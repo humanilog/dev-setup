@@ -1,5 +1,9 @@
 # dev-setup
 
+## URL / Port for 10.0
+    
+    localhost:8068 or 127.0.0.1:8068
+
 ## Installation
 
 First build the customized Docker image using:
