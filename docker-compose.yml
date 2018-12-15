@@ -2,7 +2,7 @@ version: '2'
 services:
   web:
     image: custom-odoo:10.0
-    command: --update donation_de --database example --addons-path="/mnt/extra-addons"
+    command: --update "donation_de,l10n_de_skr49" --database example --addons-path="/mnt/extra-addons,/mnt/donation,/mnt/addons"
     # -u tells Odoo to update a certain addon (e.g. myconferences), you can also put "all"
     # -d specifies the name of the database, here "example"
     # https://stackoverflow.com/questions/44263764/update-all-odoo-modules-in-a-docker-container
@@ -13,8 +13,9 @@ services:
     volumes:
       - odoo-web-data:/var/lib/odoo
       - ./config:/etc/odoo
-      #- ./addons:/mnt/extra-addons
-      - /Users/franz/git/github/humanilog/donation:/mnt/extra-addons
+      - ./addons:/mnt/extra-addons
+      - /Users/franz/git/github/humanilog/donation:/mnt/donation
+      - /Users/franz/git/github/humanilog/l10n_de_skr49:/mnt/addons/l10n_de_skr49
   db:
     image: postgres:9.4
     environment:
