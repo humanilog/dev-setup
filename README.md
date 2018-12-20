@@ -55,23 +55,27 @@ You can find this setting in `debug` mode in
 
     Settings > Technical > Parameters > System Parameters
 
-**How do you find out the address to put in the setting?**
+#### How do you find out the address to put in the setting?
 
 1. Find the docker network container for your odoo with
 
-    docker network ls
+        docker network ls
+    
+    There should be an entry like `<name of your local dev-setup repository>_default`.
+    ![alt text](https://github.com/humanilog/dev-setup/blob/10.0/readme_pics/step_1.png)
 
-There should be an entry like `<name of your local dev-setup repository>_default`.
 
 2. Copy the `NETWORK ID` of that container!
 
 3. Run the command
 
-    docker network inspect <NETWORK ID>
+        docker network inspect <NETWORK ID>
+        
+   ![alt text](https://github.com/humanilog/dev-setup/blob/10.0/readme_pics/step_3.png)
 
 4. In the key `Containers` you will find two docker containers. Copy the `IPv4Address` of the `odoo` container (NOT the postgres one). Put this address into the `web.base.url` setting in the format 
 
-    http://<ip-address>:8069
+        http://<ip-address>:8069
 
 ### cannot connect to postgres during installation
 It happens - especially during the first installation - that the postgres db is not fast enough in starting up. Odoo is then already trying to connect to postgres and then exits with an error code.
