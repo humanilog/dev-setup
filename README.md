@@ -22,42 +22,81 @@ Then the new addon is visible in Odoo and can be installed.
 
 ## If you need to access the docker container:
 
-You can see the running instance of Odoo and Postgres docker containers by typing:
+You can see all instance of Odoo and Postgres docker containers by typing:
 
-    docker ps
+    docker ps -a
 
 You can jump into the Odoo container by executing:
 
-    docker exec -it <containerId> /bin/bash
+    docker exec -it <container> /bin/bash
+    
+## Networking
 
-## wait-for-it script
+If you want to open up your local odoo server in your local network, read this section.
 
-The wait-for-it bash script is used to start the odoo docker image only after the postgres server is up. Check out **Troubleshooting** to understand why. The script is cpoied from https://github.com/vishnubob/wait-for-it.
+Run `ipconfig`(Windows) or `ifconfig`(Linux) to find out your ip address in your local network. To access your server from another computer type in your browser
 
+    <your_ip_address>:8069
+
+For the docker ip adresses run
+
+    docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
+    
+### Windows
+
+In Windows docker is run in a virtual machine. If you cannot access your server from outside you have to forward the port of the VM. The docker default network address is `10.0.75.1`. Please change it in the command below if you adjusted this setting in docker for windows.
+
+    netsh interface portproxy add v4tov4 listenport=8069 listenaddress=10.0.75.1 connectport=8069 connectaddress=<your ip address>
+
+It should then work as described above.
+    
 ## Troubleshooting
+
+### HOWTO delete docker containers
+
+If you are stuck with an error, this is often the fastest solution.
+
+Choose the containers you want to delete from 
+
+    docker ps -a
+
+Delete them via 
+
+    docker rm <container>
+    docker volume prune
+
+To delete all do 
+
+    docker rm $(docker ps -a -q)	
+    docker volume prune
 
 ### Postgres slower than odoo when starting up
 
 It happens - especially during the first installation - that the postgres db is not fast enough in starting up. Odoo is then already trying to connect to postgres and then exits with an error code.
 
-Please wait until postgres is up before you kill docker.
+In such a case, please wait until postgres is up before you kill docker.
 
-Depending on the os it then might just work if you try it again.
-It happens that postgres or odoo saves a weird error because of the first error exit. Then you have to delete all data of odoo and postgres before starting it up again.
+Therefore, we added the following workaround:
 
-Therefore try
+#### wait-for-it script
 
-    docker rm $(docker ps -a -q)	
+The wait-for-it bash script is used to start the odoo docker image only after the postgres server is up. The script is copied from https://github.com/vishnubob/wait-for-it.
 
-    docker volume prune
+### Python ImportERROR: No import module <module_name> or similar
 
-and if it is still not working also clear all volumes folders of dev-setup.
+If you start up odoo and you have an incorrect python file in a module in your addons folder, it can lead to this error. Odoo preloads all python files in the addons folder even if the corresponding modules are not installed.
 
-### No import module models
+To solve this issue:
+
+    Clear your Browser cache!
+    Either fix the python error or remove the module from the addons folder.
 
 ### Windows
 
 #### ERROR: Cannot start service odoo: driver failed programming external connectivity on endpoint ...
 
-Clear cache
+This error can appear if you are not shutting down the server correctly, e.g. power turned off or you just shut the shell without shutting down the server.
+Mostly, it is enough to 
+
+    Clear your Browser cache!
 
