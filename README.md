@@ -49,6 +49,8 @@ In Windows docker is run in a virtual machine. If you cannot access your server 
     netsh interface portproxy add v4tov4 listenport=8069 listenaddress=10.0.75.1 connectport=8069 connectaddress=<your ip address>
 
 It should then work as described above.
+
+An other problem could also be the Windows firewall.
     
 ## Troubleshooting
 
