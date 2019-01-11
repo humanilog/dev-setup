@@ -100,5 +100,7 @@ To solve this issue:
 This error can appear if you are not shutting down the server correctly, e.g. power turned off or you just shut the shell without shutting down the server.
 Mostly, it is enough to 
 
-    Clear your Browser cache!
+    Restart your docker server
+    
+Check out this [link](https://github.com/docker/for-win/issues/1038) for this problem!
 
