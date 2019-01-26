@@ -1,8 +1,8 @@
 # dev-setup
 
-## URL / Port for 10.0
+## URL / Port for 11.0
     
-    localhost:8070 or 127.0.0.1:8070
+    localhost:8069 or 127.0.0.1:8069
 
 ## Installation
 
