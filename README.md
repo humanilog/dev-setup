@@ -1,8 +1,15 @@
 # dev-setup
 
-## URL / Port for 11.0
+## Default
+
+### URL / Port for 11.0
     
     localhost:8069 or 127.0.0.1:8069
+    
+### Login credentials
+
+    email: admin
+    password: admin
 
 ## Installation
 
