@@ -1,4 +1,4 @@
-FROM odoo:10.0
+FROM odoo:9
 
 USER root
 RUN pip install num2words

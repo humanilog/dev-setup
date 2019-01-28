@@ -1,18 +1,28 @@
 # dev-setup
 
-## URL / Port for 10.0
-    
-    localhost:8070 or 127.0.0.1:8070
+## Default
 
-## Installation
+### URL / Port for 10.0
+    
+    localhost:8071 or 127.0.0.1:8071
+
+###Installation
 
 First build the customized Docker image using:
 
-    docker build --tag custom-odoo:10.0 custom-odoo/
+    docker build --tag custom-odoo:11.0 custom-odoo/
 
 Run Odoo using:
 
     docker-compose up
+
+## Installation
+
+Run Odoo using:
+
+    docker-compose up
+
+The customized odoo image is build within.
 
 ## Install extra modules/addons
 
@@ -26,69 +36,84 @@ Then the new addon is visible in Odoo and can be installed.
 
 ## If you need to access the docker container:
 
-You can see the running instance of Odoo and Postgres docker containers by typing:
+You can see all instance of Odoo and Postgres docker containers by typing:
 
-    docker ps
+    docker ps -a
 
 You can jump into the Odoo container by executing:
 
-    docker exec -it <containerId> /bin/bash
-
-or
-
-    docker exec -it $(docker ps -aqf "name=dev-setup_web") /bin/bash
-
-## wait-for-it script
-
-The wait-for-it bash script is used to start the odoo docker image only after the postgres server is up. Check out **Troubleshooting** to understand why. The script is cpoied from https://github.com/vishnubob/wait-for-it.
-
-## Troubleshooting 
-
-### print pdf with the right styles and images
-When odoo is started in docker, odoo takes on `http://localho....` as the global setting for its own network addres. However, docker puts a layer on top and changes the network behavior.
-If you are then printing a report as pdf, the html to pdf converter `wkhtmltopdf` does not find the right styles and images referenced in the html anymore.
-To solve this problem you have to update the setting 
-
-    web.base.url
-
-You can find this setting in `debug` mode in 
-
-    Settings > Technical > Parameters > System Parameters
-
-#### How do you find out the address to put in the setting?
-
-1. Find the docker network container for your odoo with
-
-        docker network ls
+    docker exec -it <container> /bin/bash
     
-    There should be an entry like `<name of your local dev-setup repository>_default`.
-    ![alt text](https://github.com/humanilog/dev-setup/blob/10.0/readme_pics/step_1.png)
+## Networking
 
+If you want to open up your local odoo server in your local network, read this section.
 
-2. Copy the `NETWORK ID` of that container!
+Run `ipconfig`(Windows) or `ifconfig`(Linux) to find out your ip address in your local network. To access your server from another computer type in your browser
 
-3. Run the command
+    <your_ip_address>:8071
 
-        docker network inspect <NETWORK ID>
-        
-   ![alt text](https://github.com/humanilog/dev-setup/blob/10.0/readme_pics/step_3.png)
+For the docker ip adresses run
 
-4. In the key `Containers` you will find two docker containers. Copy the `IPv4Address` of the `odoo` container (NOT the postgres one). Put this address into the `web.base.url` setting in the format 
+    docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
+    
+### Windows
 
-        http://<ip-address>:8069
+In Windows docker is run in a virtual machine. If you cannot access your server from outside you have to forward the port of the VM. The docker default network address is `10.0.75.1`. Please change it in the command below if you adjusted this setting in docker for windows.
 
-### cannot connect to postgres during installation
-It happens - especially during the first installation - that the postgres db is not fast enough in starting up. Odoo is then already trying to connect to postgres and then exits with an error code.
+    netsh interface portproxy add v4tov4 listenport=8069 listenaddress=10.0.75.1 connectport=8069 connectaddress=<your ip address>
 
-Please wait until postgres is up before you kill docker.
+It should then work as described above.
 
-Depending on the os it then might just work if you try it again.
-It happens that postgres or odoo saves a weird error because of the first error exit. Then you have to delete all data of odoo and postgres before starting it up again.
+An other problem could also be the Windows firewall.
+    
+## Troubleshooting
 
-Therefore try
+### HOWTO delete docker containers
 
-    docker rm $(docker ps -a -q)	
+If you are stuck with an error, this is often the fastest solution.
 
+Choose the containers you want to delete from 
+
+    docker ps -a
+
+Delete them via 
+
+    docker rm <container>
     docker volume prune
 
-and if it is still not working also clear all volumes folders of dev-setup.
+To delete all do 
+
+    docker rm $(docker ps -a -q)	
+    docker volume prune
+
+### Postgres slower than odoo when starting up
+
+It happens - especially during the first installation - that the postgres db is not fast enough in starting up. Odoo is then already trying to connect to postgres and then exits with an error code.
+
+In such a case, please wait until postgres is up before you kill docker.
+
+Therefore, we added the following workaround:
+
+#### wait-for-it script
+
+The wait-for-it bash script is used to start the odoo docker image only after the postgres server is up. The script is copied from https://github.com/vishnubob/wait-for-it.
+
+### Python ImportERROR: No import module <module_name> or similar
+
+If you start up odoo and you have an incorrect python file in a module in your addons folder, it can lead to this error. Odoo preloads all python files in the addons folder even if the corresponding modules are not installed.
+
+To solve this issue:
+
+    Clear your Browser cache!
+    Either fix the python error or remove the module from the addons folder.
+
+### Windows
+
+#### ERROR: Cannot start service odoo: driver failed programming external connectivity on endpoint ...
+
+This error can appear if you are not shutting down the server correctly, e.g. power turned off or you just shut the shell without shutting down the server.
+Mostly, it is enough to 
+
+    Restart your docker server
+    
+Check out this [link](https://github.com/docker/for-win/issues/1038) for this problem!

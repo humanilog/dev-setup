@@ -1,26 +1,18 @@
 version: '3.3'
 services:
     postgres:
-      image: postgres:9.5 
+      image: postgres:9.3 
       volumes:
-        - ./volumes/postgres:/var/lib/postgresql/data
+        - /var/lib/postgresql/data
       environment:
         - POSTGRES_USER=odoo
     odoo:
-      image: custom-odoo:10.0
-      entrypoint:
-        - wait-for-it.sh
-        - postgres:5432
-        - --  
-        - /entrypoint.sh
-        - odoo  
-        # NOT TESTED HOWTO DO flags
-        # --update all --database dev-setup_postgres_1 
-        # -u tells Odoo to update a certain addon (e.g. myconferences), you can also put "all"
-        # -d specifies the name of the database, here "example"
-        # --addons-path is the path in the docker container
+      build:
+        context: ./custom-odoo
+        dockerfile: Dockerfile
+      image: custom-odoo:9.0
       ports:
-        - 8070:8069
+        - 8071:8069
       volumes:
         - ./wait-for-it/wait-for-it.sh:/usr/local/bin/wait-for-it.sh
         - ./addons:/mnt/extra-addons
