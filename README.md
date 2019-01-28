@@ -15,7 +15,7 @@ Run Odoo using:
 
 The customized odoo image `custom-odoo` is build within. In case it is not run:
 
-    docker build --tag custom-odoo:11.0 custom-odoo/
+    docker build --tag custom-odoo:9.0 custom-odoo/
 
 ## Install extra modules/addons
 
