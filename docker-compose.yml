@@ -7,6 +7,9 @@ services:
       environment:
         - POSTGRES_USER=odoo
     odoo:
+      build:
+        context: ./custom-odoo
+        dockerfile: Dockerfile
       image: custom-odoo:11.0
       entrypoint:
         - wait-for-it.sh
@@ -14,11 +17,8 @@ services:
         - --  
         - /entrypoint.sh
         - odoo
-        # NOT TESTED HOWTO DO flags
-        # --update all --database dev-setup_postgres_1 
-        # -u tells Odoo to update a certain addon (e.g. myconferences), you can also put "all"
-        # -d specifies the name of the database, here "example"
-        # --addons-path is the path in the docker container
+        - --dev
+        - all
       ports:
         - 8069:8069
       volumes:
