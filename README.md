@@ -2,9 +2,9 @@
 
 ## Default
 
-### URL / Port for 11.0
+### URL / Port for 12.0
     
-    localhost:8069 or 127.0.0.1:8069
+    localhost:8069 or 127.0.0.1:12069
     
 ### Login credentials
 
@@ -19,7 +19,7 @@ Run Odoo using:
 
 The customized odoo image `custom-odoo` is build within. In case it is not run:
 
-    docker build --tag custom-odoo:11.0 custom-odoo/
+    docker build --tag custom-odoo:12.0 custom-odoo/
 
 ## Install extra modules/addons
 
@@ -47,7 +47,7 @@ If you want to open up your local odoo server in your local network, read this s
 
 Run `ipconfig`(Windows) or `ifconfig`(Linux) to find out your ip address in your local network. To access your server from another computer type in your browser
 
-    <your_ip_address>:8069
+    <your_ip_address>:12069
 
 For the docker ip adresses run
 
