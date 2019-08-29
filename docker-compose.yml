@@ -1,34 +1,36 @@
 version: '3.3'
 services:
-    postgres:
-      image: postgres:10 
-      volumes:
-        - ./volumes/postgres:/var/lib/postgresql/data
-      environment:
-        - POSTGRES_DB=postgres
-        - POSTGRES_PASSWORD=odoo
-        - POSTGRES_USER=odoo
-    odoo:
-      build:
-        context: ./custom-odoo
-        dockerfile: Dockerfile
-      image: custom-odoo:12.0
-      entrypoint:
-        - wait-for-it.sh
-        - postgres:5432
-        - --  
-        - /entrypoint.sh
-        - odoo
-        - --dev
-        - all
-      ports:
-        - 12069:8069
-      volumes:
-        - ./wait-for-it/wait-for-it.sh:/usr/local/bin/wait-for-it.sh
-        - ./addons:/mnt/extra-addons
-        - ./volumes/odoo/filestore:/opt/odoo/data/filestore
-        - ./volumes/odoo/sessions:/opt/odoo/data/sessions
-      links:
-        - postgres:db
-      environment:
-        - ODOO_DB_USER=odoo
+  postgres:
+    image: postgres:10 
+    volumes:
+      - postgresql-volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+  odoo:
+    build:
+      context: ./custom-odoo
+      dockerfile: Dockerfile
+    image: custom-odoo:12.0
+    entrypoint:
+      - wait-for-it.sh
+      - postgres:5432
+      - --  
+      - /entrypoint.sh
+      - odoo
+      - --dev
+      - all
+    ports:
+      - 12069:8069
+    volumes:
+      - ./wait-for-it/wait-for-it.sh:/usr/local/bin/wait-for-it.sh
+      - ./addons:/mnt/extra-addons
+      - ./volumes/odoo/filestore:/opt/odoo/data/filestore
+      - ./volumes/odoo/sessions:/opt/odoo/data/sessions
+    links:
+      - postgres:db
+    environment:
+      - ODOO_DB_USER=odoo
+volumes:
+  postgresql-volume:
