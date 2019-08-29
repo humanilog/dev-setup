@@ -4,7 +4,7 @@
 
 ### URL / Port for 12.0
     
-    localhost:8069 or 127.0.0.1:12069
+    localhost:12069 or 127.0.0.1:12069
     
 ### Login credentials
 
