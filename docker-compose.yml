@@ -5,6 +5,8 @@ services:
       volumes:
         - ./volumes/postgres:/var/lib/postgresql/data
       environment:
+        - POSTGRES_DB=postgres
+        - POSTGRES_PASSWORD=odoo
         - POSTGRES_USER=odoo
     odoo:
       build:
@@ -30,3 +32,5 @@ services:
         - postgres:db
       environment:
         - ODOO_DB_USER=odoo
+volumes:
+  postgresql-volume:
