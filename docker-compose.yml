@@ -12,7 +12,7 @@ services:
     build:
       context: ./custom-odoo
       dockerfile: Dockerfile
-    image: custom-odoo:12.0
+    image: custom-odoo:14.0
     entrypoint:
       - wait-for-it.sh
       - postgres:5432
@@ -22,7 +22,7 @@ services:
       - --dev
       - all
     ports:
-      - 12069:8069
+      - 14069:8069
     volumes:
       - ./wait-for-it/wait-for-it.sh:/usr/local/bin/wait-for-it.sh
       - ./addons:/mnt/extra-addons
